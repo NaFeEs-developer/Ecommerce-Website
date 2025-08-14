@@ -9,6 +9,12 @@ from django.db.models import Q
 from .models import Category, Product, Cart, CartItem, Order, OrderItem
 from django.conf import settings
 
+try:
+	import stripe
+	stripe.api_key = settings.STRIPE_SECRET_KEY
+except Exception:
+	stripe = None
+
 
 def _get_or_create_cart(request: HttpRequest) -> Cart:
 	if request.user.is_authenticated:
@@ -108,6 +114,39 @@ def checkout(request: HttpRequest) -> HttpResponse:
 	cart.checked_out = True
 	cart.save()
 	return render(request, 'store/order_success.html', {'order': order})
+
+
+@login_required
+@require_POST
+def stripe_checkout(request: HttpRequest) -> HttpResponse:
+	cart = _get_or_create_cart(request)
+	items = list(cart.items.select_related('product'))
+	if not items:
+		return redirect('cart_detail')
+	if stripe and settings.STRIPE_PUBLIC_KEY and settings.STRIPE_SECRET_KEY:
+		line_items = []
+		for i in items:
+			line_items.append({
+				'price_data': {
+					'currency': 'usd',
+					'product_data': {'name': i.product.title},
+					'unit_amount': int(i.product.discounted_price * 100)
+				},
+				'quantity': i.quantity,
+			})
+			session = stripe.checkout.Session.create(
+				mode='payment',
+				line_items=line_items,
+				success_url=request.build_absolute_uri('/checkout/success/'),
+				cancel_url=request.build_absolute_uri('/cart/'),
+			)
+			return redirect(session.url)
+	# Fallback: simulate successful payment using normal checkout flow
+	return checkout(request)
+
+
+def checkout_success(request: HttpRequest) -> HttpResponse:
+	return render(request, 'store/order_success.html', {'order': None})
 
 
 def register_view(request: HttpRequest) -> HttpResponse:
