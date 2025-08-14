@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block title %}Your Cart{% endblock %}
+{% block content %}
+<h2 class="section-title">Your Cart</h2>
+<div class="cart-page">
+	<div class="cart-items">
+		{% for item in items %}
+		<div class="cart-row">
+			<div class="cart-product">
+				{% if item.product.thumbnail %}
+					<img src="{{ item.product.thumbnail.url }}" alt="{{ item.product.title }}">
+				{% endif %}
+				<div>
+					<h4><a href="/product/{{ item.product.slug }}/">{{ item.product.title }}</a></h4>
+					<p>${{ item.product.discounted_price }}</p>
+				</div>
+			</div>
+			<form action="/cart/item/{{ item.id }}/update/" method="post" class="cart-qty-form">
+				{% csrf_token %}
+				<input type="number" name="quantity" value="{{ item.quantity }}" min="0">
+				<button type="submit">Update</button>
+			</form>
+			<div class="cart-subtotal">${{ item.subtotal }}</div>
+		</div>
+		{% empty %}
+		<p>Your cart is empty.</p>
+		{% endfor %}
+	</div>
+	<div class="cart-summary">
+		<h3>Checkout</h3>
+		<form action="/checkout/" method="post" class="checkout-form">
+			{% csrf_token %}
+			<input name="full_name" placeholder="Full name" required>
+			<input name="email" type="email" placeholder="Email" required>
+			<input name="phone" placeholder="Phone">
+			<input name="address_line1" placeholder="Address line 1" required>
+			<input name="address_line2" placeholder="Address line 2">
+			<input name="city" placeholder="City" required>
+			<input name="state" placeholder="State" required>
+			<input name="postal_code" placeholder="Postal Code" required>
+			<input name="country" placeholder="Country" required>
+			<button type="submit" class="btn-primary" {% if not items %}disabled{% endif %}>Pay & Place Order</button>
+		</form>
+	</div>
+</div>
+{% endblock %}

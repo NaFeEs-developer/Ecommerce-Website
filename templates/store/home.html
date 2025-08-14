@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %}UniShop - Home{% endblock %}
+{% block content %}
+<div class="hero">
+	<div class="hero-content">
+		<h1>Discover Products You'll Love</h1>
+		<p>Modern, responsive, and student-built e-commerce experience.</p>
+	</div>
+</div>
+
+<h2 class="section-title">Featured Products</h2>
+<div class="product-grid">
+	{% for p in products %}
+	<a class="product-card" href="/product/{{ p.slug }}/">
+		<div class="product-thumb">
+			{% if p.thumbnail %}
+				<img src="{{ p.thumbnail.url }}" alt="{{ p.title }}">
+			{% else %}
+				<div class="placeholder-thumb">No Image</div>
+			{% endif %}
+			{% if p.discount_percent %}
+				<span class="badge">-{{ p.discount_percent }}%</span>
+			{% endif %}
+		</div>
+		<div class="product-info">
+			<h3>{{ p.title }}</h3>
+			<div class="price-row">
+				<span class="price">${{ p.discounted_price }}</span>
+				{% if p.discount_percent %}
+					<span class="price-strike">${{ p.price }}</span>
+				{% endif %}
+			</div>
+		</div>
+	</a>
+	{% empty %}
+	<p>No products yet.</p>
+	{% endfor %}
+</div>
+{% endblock %}
