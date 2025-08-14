@@ -1,0 +1,7 @@
+Django==5.0.6
+Pillow==10.4.0
+whitenoise==6.7.0
+channels==4.1.0
+daphne==4.1.2
+redis==5.0.8
+stripe==10.5.0

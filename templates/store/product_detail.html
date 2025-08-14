@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block title %}{{ product.title }}{% endblock %}
+{% block content %}
+<div class="product-detail">
+	<div class="gallery">
+		<div class="main-thumb">
+			{% if product.thumbnail %}
+				<img src="{{ product.thumbnail.url }}" alt="{{ product.title }}">
+			{% else %}
+				<div class="placeholder-thumb large">No Image</div>
+			{% endif %}
+		</div>
+		<div class="thumb-row">
+			{% for img in images %}
+				<img src="{{ img.image.url }}" alt="{{ img.alt_text|default:product.title }}">
+			{% empty %}
+				<!-- no extra images -->
+			{% endfor %}
+		</div>
+	</div>
+	<div class="details">
+		<h1>{{ product.title }}</h1>
+		<p class="category"><a href="/category/{{ product.category.slug }}/">{{ product.category.name }}</a></p>
+		<div class="price-row">
+			<span class="price">${{ product.discounted_price }}</span>
+			{% if product.discount_percent %}
+				<span class="price-strike">${{ product.price }}</span>
+				<span class="badge">-{{ product.discount_percent }}%</span>
+			{% endif %}
+		</div>
+		<p class="desc">{{ product.description }}</p>
+		<form action="/cart/add/{{ product.slug }}/" method="post" class="add-cart-form">
+			{% csrf_token %}
+			<label>Qty</label>
+			<input type="number" name="quantity" min="1" value="1">
+			<button type="submit" class="btn-primary" {% if not product.in_stock %}disabled{% endif %}>Add to Cart</button>
+		</form>
+		<form action="/checkout/" method="post" class="buy-now-form">
+			{% csrf_token %}
+			<input type="hidden" name="full_name" value="{{ request.user.get_full_name|default:request.user.username }}">
+			<input type="hidden" name="email" value="{{ request.user.email }}">
+			<button type="submit" class="btn-secondary" {% if not product.in_stock %}disabled{% endif %}>Buy Now</button>
+		</form>
+	</div>
+</div>
+{% endblock %}

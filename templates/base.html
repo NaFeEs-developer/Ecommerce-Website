@@ -1,0 +1,64 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>{% block title %}Ecommerce Store{% endblock %}</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" />
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+	<header class="site-header">
+		<div class="container header-inner">
+			<a href="/" class="logo">UniShop</a>
+			<form action="/" method="get" class="search-bar">
+				<input type="text" name="q" placeholder="Search products..." value="{{ query|default:'' }}">
+				<button type="submit">Search</button>
+			</form>
+			<nav class="nav">
+				<a href="/cart/" class="cart-link">Cart ({{ cart_count }})</a>
+				{% if request.user.is_authenticated %}
+				<span>Hi, {{ request.user.username }}</span>
+				<a href="/logout/">Logout</a>
+				{% else %}
+				<a href="/login/">Login</a>
+				<a href="/register/" class="btn-primary">Register</a>
+				{% endif %}
+			</nav>
+		</div>
+		<div class="category-strip">
+			<div class="container">
+				{% for c in global_categories %}
+					<a href="/category/{{ c.slug }}/" class="chip">{{ c.name }}</a>
+				{% endfor %}
+			</div>
+		</div>
+	</header>
+
+	<main class="container">
+		{% block content %}{% endblock %}
+	</main>
+
+	<footer class="site-footer">
+		<div class="container footer-inner">
+			<p>© {{ now|date:"Y" }} UniShop. Built for University Final Year Project.</p>
+			<p><a href="/admin/">Admin</a></p>
+		</div>
+	</footer>
+
+	<div id="chat-widget" class="chat-widget">
+		<div class="chat-header">Assistant</div>
+		<div class="chat-messages" id="chat-messages"></div>
+		<div class="chat-input">
+			<input id="chat-text" type="text" placeholder="Ask about products..." />
+			<button id="chat-send">Send</button>
+		</div>
+	</div>
+
+	<script src="{% static 'js/chat.js' %}"></script>
+</body>
+</html>
