@@ -1,14 +1,20 @@
 {% extends 'base.html' %}
 {% block title %}Login{% endblock %}
 {% block content %}
-<h2 class="section-title">Login</h2>
-<form method="post" class="auth-form">
-	{% csrf_token %}
-	{{ form.non_field_errors }}
-	<div class="form-grid">
-		<label>Username {{ form.username }}</label>
-		<label>Password {{ form.password }}</label>
-	</div>
-	<button type="submit" class="btn-primary">Login</button>
-</form>
+<div class="auth-container" style="max-width:420px;margin:48px auto;padding:40px 32px;background:linear-gradient(135deg,#121936 70%,#6d28d9 100%);border-radius:18px;box-shadow:0 8px 32px rgba(0,0,0,0.18);">
+    <div style="text-align:center;margin-bottom:18px;">
+        <img src="https://cdn-icons-png.flaticon.com/512/1077/1077012.png" alt="Login" style="width:64px;height:64px;filter:drop-shadow(0 2px 8px #6d28d9);">
+    </div>
+    <h2 class="section-title" style="text-align:center;font-size:2rem;letter-spacing:0.08em;">Sign In to UniShop</h2>
+    <form method="post" class="auth-form" style="display:flex;flex-direction:column;gap:22px;margin-top:18px;">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        <div class="form-grid" style="display:flex;flex-direction:column;gap:16px;">
+            <label style="font-weight:600;font-size:1rem;">Username {{ form.username }}</label>
+            <label style="font-weight:600;font-size:1rem;">Password {{ form.password }}</label>
+        </div>
+        <button type="submit" class="btn-primary" style="width:100%;font-size:18px;padding:12px 0;letter-spacing:0.05em;">Login</button>
+        <p style="text-align:center;margin-top:10px;color:#bac7e3;">Don't have an account? <a href="/register/" style="color:var(--accent);font-weight:600;">Register</a></p>
+    </form>
+</div>
 {% endblock %}

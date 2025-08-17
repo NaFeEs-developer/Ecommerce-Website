@@ -2,38 +2,52 @@
 {% block title %}UniShop - Home{% endblock %}
 {% block content %}
 <div class="hero">
-	<div class="hero-content">
-		<h1>Discover Products You'll Love</h1>
-		<p>Modern, responsive, and student-built e-commerce experience.</p>
-	</div>
+    <div class="hero-content">
+        <h1>Welcome to UniShop!</h1>
+        <p>Find the best products, deals, and more. Enjoy a modern shopping experience.</p>
+        <a href="/register/" class="btn-primary" style="margin-top:18px;display:inline-block;">Join Now</a>
+    </div>
+</div>
+
+<div class="promo-banner" style="background:linear-gradient(90deg,#6d28d9 0%,#10b981 100%);color:#fff;padding:18px 24px;border-radius:14px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;">
+    <span style="font-size:18px;font-weight:600;">Summer Sale! Up to 50% off select items.</span>
+    <a href="/category/sale/" class="btn-secondary" style="background:#fff;color:#6d28d9;">Shop Sale</a>
+</div>
+
+<div class="section-title">Browse Categories</div>
+<div class="category-row" style="display:flex;gap:16px;margin-bottom:24px;">
+    <a href="/category/electronics/" class="chip">Electronics</a>
+    <a href="/category/fashion/" class="chip">Fashion</a>
+    <a href="/category/accessories/" class="chip">Accessories</a>
+    <a href="/category/sale/" class="chip">Sale</a>
 </div>
 
 <h2 class="section-title">Featured Products</h2>
 <div class="product-grid">
-	{% for p in products %}
-	<a class="product-card" href="/product/{{ p.slug }}/">
-		<div class="product-thumb">
-			{% if p.thumbnail %}
-				<img src="{{ p.thumbnail.url }}" alt="{{ p.title }}">
-			{% else %}
-				<div class="placeholder-thumb">No Image</div>
-			{% endif %}
-			{% if p.discount_percent %}
-				<span class="badge">-{{ p.discount_percent }}%</span>
-			{% endif %}
-		</div>
-		<div class="product-info">
-			<h3>{{ p.title }}</h3>
-			<div class="price-row">
-				<span class="price">${{ p.discounted_price }}</span>
-				{% if p.discount_percent %}
-					<span class="price-strike">${{ p.price }}</span>
-				{% endif %}
-			</div>
-		</div>
-	</a>
-	{% empty %}
-	<p>No products yet.</p>
-	{% endfor %}
+    {% for p in products %}
+    <a class="product-card" href="/product/{{ p.slug }}/">
+        <div class="product-thumb">
+            {% if p.thumbnail %}
+                <img src="{{ p.thumbnail.url }}" alt="{{ p.title }}">
+            {% else %}
+                <div class="placeholder-thumb large">No Image</div>
+            {% endif %}
+            {% if p.discount_percent %}
+                <span class="badge">-{{ p.discount_percent }}%</span>
+            {% endif %}
+        </div>
+        <div class="product-info">
+            <h3>{{ p.title }}</h3>
+            <div class="price-row">
+                <span class="price">${{ p.discounted_price }}</span>
+                {% if p.discount_percent %}
+                    <span class="price-strike">${{ p.price }}</span>
+                {% endif %}
+            </div>
+        </div>
+    </a>
+    {% empty %}
+    <p>No products yet.</p>
+    {% endfor %}
 </div>
 {% endblock %}

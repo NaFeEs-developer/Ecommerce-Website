@@ -43,10 +43,17 @@
 		{% block content %}{% endblock %}
 	</main>
 
-	<footer class="site-footer">
-		<div class="container footer-inner">
-			<p>© {{ now|date:"Y" }} UniShop. Built for University Final Year Project.</p>
-			<p><a href="/admin/">Admin</a></p>
+	<footer class="site-footer" style="background:#121936;padding:32px 0 18px;margin-top:48px;">
+		<div class="container footer-inner" style="display:flex;flex-direction:column;align-items:center;gap:16px;">
+			<div style="display:flex;justify-content:center;">
+				<a href="/" class="logo" style="font-size:2rem;color:#fff;text-align:center;">UniShop</a>
+			</div>
+			<div style="color:#bac7e3;font-size:15px;">© {{ now|date:"Y" }} UniShop. All rights reserved.</div>
+			<div style="display:flex;gap:12px;justify-content:center;">
+				<a href="#" style="color:#6d28d9;"><img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Instagram" style="width:24px;height:24px;vertical-align:middle;"></a>
+				<a href="#" style="color:#10b981;"><img src="https://cdn-icons-png.flaticon.com/512/733/733579.png" alt="Facebook" style="width:24px;height:24px;vertical-align:middle;"></a>
+				<a href="#" style="color:#ef4444;"><img src="https://cdn-icons-png.flaticon.com/512/733/733558.png" alt="YouTube" style="width:24px;height:24px;vertical-align:middle;"></a>
+			</div>
 		</div>
 	</footer>
 
